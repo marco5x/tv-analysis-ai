@@ -1,19 +1,23 @@
 "use client"
 
 import { useState, useEffect, useRef } from 'react';
-import { widget } from '../../public/charting_library/';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+ import { widget } from '../../public/charting_library/';
 import datafeed from './api-cryptocompare/datafeed';
 
-export const TradingviewWidget = () => {
+
+const TradingviewWidget = () => {
     const chartContainerRef = useRef();
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
+    const router = useRouter()
+    
     const [intervalo, setIntervalo] = useState(null);
     const [symbol, setSymbol] = useState(null);
-
+    
     useEffect(() => {
-        let currentUrl = window.location.href;
-        let url = new URL(currentUrl);
-        const symbolFromUrl = url.searchParams.get('symbol');
-        const intervalFromUrl = url.searchParams.get('interval') || localStorage.getItem('tradingview.chart.lastUsedTimeBasedResolution') || "1D";
+        const symbolFromUrl = searchParams.get('symbol')
+        const intervalFromUrl = searchParams.get('interval') || localStorage.getItem('tradingview.chart.lastUsedTimeBasedResolution') || "1D";
     
         if (symbolFromUrl) {
             setSymbol(symbolFromUrl);
@@ -35,17 +39,25 @@ export const TradingviewWidget = () => {
                 setIntervalo(savedInterval);
             }
         }
-      }, []);
+    }, []);
 
     useEffect(() => {
         if (!symbol || !intervalo) return;
 
         // Actualizar la URL para reflejar el símbolo y el intervalo
-        const url = new URL(window.location.href);
-        url.searchParams.set('symbol', symbol); // Actualiza el parámetro 'symbol'
-        url.searchParams.set('interval', intervalo); // Actualiza el parámetro 'interval'
-        window.history.replaceState({}, '', url.toString());
 
+        const params = new URLSearchParams(searchParams.toString());
+        params.set('symbol', symbol);
+        params.set('interval', intervalo);
+
+        const nuevaURL = `${pathname}?${params.toString()}`;
+        router.replace(nuevaURL, undefined, { shallow: true });
+
+        // const url = new URL(window.location.href);
+        // url.searchParams.set('symbol', symbol); // Actualiza el parámetro 'symbol'
+        // url.searchParams.set('interval', intervalo); // Actualiza el parámetro 'interval'
+        // window.history.replaceState({}, '', url.toString());
+        
         function convertirMarkdownAHTML(texto) {
             // Convertir encabezados
             texto = texto.replace(/^#### (.+)$/gm, '<h2 className="uppercase">$1</h2>'); 
@@ -599,8 +611,11 @@ export const TradingviewWidget = () => {
                 widgets.remove();
             }
         };
+    
 
     }, [ intervalo ]);
 
     return <div ref={chartContainerRef} style={{ height: '100vh', width: '100%' }} />
 };
+
+export default TradingviewWidget;

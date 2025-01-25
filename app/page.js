@@ -1,6 +1,7 @@
-import { TradingviewWidget } from './components/TradingviewWidget';
-import { Chat } from './components/Chat';
+"use client"
 
+import TradingviewWidget from './components/TradingviewWidget';
+import { Chat } from './components/Chat';
 
 export default function Home() {
     return (
