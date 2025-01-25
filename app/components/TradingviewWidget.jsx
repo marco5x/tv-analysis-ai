@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
- import { widget } from '../../public/charting_library/';
+import { widget } from '../../public/static/charting_library/';
 import datafeed from './api-cryptocompare/datafeed';
 
 
@@ -451,7 +451,7 @@ const TradingviewWidget = () => {
             locale: 'es',
             interval: intervalo,
             container: chartContainerRef.current,
-            library_path: '/charting_library/',
+            library_path: 'static/charting_library/',
             charts_storage_url: 'https://saveload.tradingview.com',
             charts_storage_api_version: '1.1',
             client_id: location?.host,

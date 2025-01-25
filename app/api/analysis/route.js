@@ -16,8 +16,6 @@ export async function POST(request) {
 
         const analysisImage = await analyzeImage(image, interval);
         const analysisNews = await getNews(category);
-        console.log(analysisNews);
-        
 
         const analysisResult = await openai.chat.completions.create({
             model: "gpt-4o-mini",
