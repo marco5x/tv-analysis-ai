@@ -573,7 +573,7 @@ const TradingviewWidget = () => {
 
                 const modal = document.getElementById("responseModal");
                 const modalMessage = document.getElementById("modalMessage");
-                modal.style.marginTop = "-51%";
+                modal.style.marginRight = "0";
                 const interval = localStorage.getItem('tradingview.chart.lastUsedTimeBasedResolution')
                 const category =  localStorage.getItem('tradingview-symbol')
 

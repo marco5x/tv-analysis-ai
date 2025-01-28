@@ -71,6 +71,13 @@ export default {
     resolveSymbol: async (symbolName, onSymbolResolvedCallback, onResolveErrorCallback, extension) => {
         const symbols = await getAllSymbols();
         const symbolItem = symbols.find(({ full_name }) => full_name === symbolName);
+        
+        function shortName(coin) {
+            let part = coin.split('/');
+            
+            return part[0];
+        }
+        const coin = shortName(symbolItem.symbol);
 
         if (!symbolItem) {
             onResolveErrorCallback('cannot resolve symbol');
@@ -106,6 +113,7 @@ export default {
             volume_precision: 2,
             data_status: 'streaming',
         };
+        localStorage.setItem('tradingview-symbol', coin);
 
         onSymbolResolvedCallback(symbolInfo);
     },

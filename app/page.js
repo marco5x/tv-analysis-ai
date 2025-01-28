@@ -8,9 +8,9 @@ const TradingviewWidget = dynamic(() => import('./components/TradingviewWidget')
 
 export default function Home() {
     return (
-        <>
+        <div className='flex'>
             <TradingviewWidget />
             <Chat />
-        </>
+        </div>
     );
 }
