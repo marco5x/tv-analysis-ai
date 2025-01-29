@@ -506,6 +506,11 @@ const TradingviewWidget = () => {
                 align: "left",
             });
 
+            const customNews = widgets.createButton({
+                useTradingViewStyle: false,
+                align: "left",
+            });
+
             const themeToggleEl = widgets.createButton({
                 useTradingViewStyle: false,
                 align: "right",
@@ -604,14 +609,81 @@ const TradingviewWidget = () => {
                     console.error('Error al enviar la imagen al backend', error);
                 }
             });
+
+            customNews.dataset.internalAllowKeyboardNavigation = "true";
+            customNews.title = "Noticias";
+            customNews.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" width="25" height="25">
+            <circle fill="none" stroke="#9c27b0" stroke-width="1.5" cx="12.5" cy="12.5" r="11.75"></circle>
+            <path fill="#9c27b0" d="m15.65 6 1.02.9-4.02 4.93h5.29L9.59 19l-1.02-.9 4.02-4.93H7.3L15.65 6Z"></path>
+            </svg>`
+
+            customNews.addEventListener("click", async function () {
+                customNews.disabled = true;
+                const newsModal = document.getElementById("newsModal");
+                const modalNews = document.getElementById("modalNews");
+
+                const coin =  localStorage.getItem('tradingview-symbol')
+
+                function traduction(highestSentiment) {
+                    if (highestSentiment === 'POSITIVE') return 'POSITIVO';
+                    if (highestSentiment === 'NEUTRAL') return 'NEUTRAL';
+                    if (highestSentiment === 'NEGATIVE') return 'NEGATIVO';
+                }
+
+                function timeAgo(timestamp) {
+                    const now = Date.now();
+                    const diffInSeconds = Math.floor((now - timestamp * 1000) / 1000);
+                    const minutes = Math.floor(diffInSeconds / 60);
+                    const hours = Math.floor(minutes / 60);
+                  
+                    if (minutes < 1) return "Hace menos de un minuto";
+                    if (minutes < 60) return `Hace ${minutes} minutos`;
+                    if (hours < 24) return `Hace ${hours} horas`;
+                    if (hours < 48) return `Hace 1 día`;
+                    return `Hace ${Math.floor(hours / 24)} días`;
+                  }
+
+                try {
+                    const response = await fetch(`/api/news/?category=${coin}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    });
+
+                    if (response.ok) {
+                        newsModal.style.display = "block";
+                        const data = await response.json();
+                        
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = data.articles.map(article => {
+                            return `
+                                <a href="${article.URL}" target="_blank" onmouseover="this.style.backgroundColor = '#DEE2F3'" onmouseout="this.style.backgroundColor = ''" style="display: flex; gap: 1rem; align-items:center; margin-top:0.5rem; margin-bottom: 0.5rem; border-bottom: 1px solid #e5e7eb;">
+                                    <img src=${article.IMAGE_URL} alt=${article.TITLE} width="48px" style="height:48px" />
+                                    <div>
+                                        <sup>${timeAgo(article.PUBLISHED_ON)}</sup>
+                                        <h2>${article.TITLE}</h2>
+                                        <sub style="position:relative; right:-69%; text-align: end">Sentimiento: ${traduction(article.SENTIMENT)}</sub>
+                                    </div>
+                                </a>
+                            `;
+                        }).join('');                        
+                        modalNews.appendChild(tempDiv);
+                    } else {
+                        console.error('Error al procesar la noticias', response.statusText);
+                        modalNews.textContent = `Lo siento: No pude solicitar las noticias`;
+                    }
+                } catch (error) {
+                    console.error('Error al solicitar las noticias', error);
+                }
+            });
         });
 
         return () => {
             if (widgets) {
                 widgets.remove();
             }
-        };
-    
+        };    
 
     }, [ intervalo ]);
 

@@ -1,57 +1,20 @@
-"use client"
-
-import { useState } from "react";
-import { PieChart } from 'react-minimal-pie-chart';
-
 
 export const GetNews = () => {
-    const [ sentiment, setSentiment] = useState(null)
-    
-    const getNews = async () => {
-        try {
-            const modalNews = document.getElementById("modalNews");
-            const category =  localStorage.getItem('tradingview-symbol')
-            const categoryParam = category ? `category=${category}` : '`category="BTC`';
-        
-            const response = await fetch(`/api/news?${categoryParam}`);
-            
-            if (response.ok) {
-                const data = await response.json();
-                    
-                setSentiment(data.sentimentConclusion.sentimentCount);
-                modalNews.textContent = data.sentimentConclusion.conclusion;
-            } else {
-                console.error('Error ', response.statusText);
-                modalNews.textContent = `Error: ${response.statusText}`;
-            }
-        } catch (error) {
-            console.error('Error ', error);
-        }
-    }
+    const closeModal = () => { 
+        const modal = document.getElementById("newsModal");
+        const modalNews = document.getElementById("modalNews");
 
-    const PieChartContainer = ({ sentiment }) => {
-        return (
-            <PieChart
-                data={[
-                    { title: `Positivo (${sentiment?.POSITIVE}%)`, value: sentiment?.POSITIVE, color: '#394E99' },
-                    { title: `Negativo (${sentiment?.NEGATIVE}%)`, value: sentiment?.NEGATIVE, color: '#f97066' },
-                    { title: `Neutral (${sentiment?.NEUTRAL}%)`, value: sentiment?.NEUTRAL, color: '#DEE2F3' },
-                ]}
-                radius = {30}
-                label={({ dataEntry }) => dataEntry.title}
-                labelStyle={{ fontSize: '4px', fill: '1D284E' }}
-                labelPosition={69}
-            />
-        )
+        modalNews.innerHTML = "";
+        modal.style.display = "none";
     }
 
     return (
-        <>
-            <button type="button" onClick={getNews} className="rounded-3xl p-2 shadow-md bg-[#394E99] text-white"> Analizar Noticias</button>
-            <div id="modalNews" className=""></div>
-            <div style={{ display: sentiment ? 'block' : 'none' }}>
-                <PieChartContainer sentiment={sentiment} />
+        <div id="newsModal" className="fixed top-[9%] left-[36%] w-[36%] h-[80%] border-l-8 border-[#394E99] rounded-lg bg-white shadow-lg p-3 overflow-y-auto hidden ">
+            <div className="w-full flex justify-between items-center mb-3 sticky">
+                <h2 className="w-auto size-4 font-bold">Últimas Noticas</h2>
+                <button id="closeModal" onClick={closeModal} className="text-dark-900 text-xl font-bold">&times;</button>
             </div>
-        </>
+            <div id="modalNews" className=""></div>
+        </div>
     )
 }

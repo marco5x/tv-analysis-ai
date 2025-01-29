@@ -6,8 +6,8 @@ export async function GET(request) {
 
     const baseUrl = 'https://data-api.cryptocompare.com/news/v1/article/list';
     const cat = request.nextUrl.searchParams.get('category');
-    
-    const params = { "lang": "ES", "limit": "100", "categories": cat };
+
+    const params = { "lang": "ES", "limit": "15", "categories": cat };
     const url = new URL(baseUrl);
     url.search = new URLSearchParams(params).toString();
 
@@ -26,6 +26,7 @@ export async function GET(request) {
             URL: article.URL,
             IMAGE_URL: article.IMAGE_URL,
             SENTIMENT: article.SENTIMENT,
+            PUBLISHED_ON: article.PUBLISHED_ON
         }));
         
         const sentimentConclusion = getSentimentConclusion(filteredData);
@@ -57,7 +58,7 @@ function getSentimentConclusion(articles) {
     function traduction() {
         if (highestSentiment === 'POSITIVE') return 'POSITIVO';
         if (highestSentiment === 'NEUTRAL') return 'NEUTRAL';
-        if (highestSentiment === 'NEGATIVO') return 'NEGATIVO';
+        if (highestSentiment === 'NEGATIVE') return 'NEGATIVO';
     }
     
     return {
