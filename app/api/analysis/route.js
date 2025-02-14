@@ -35,10 +35,16 @@ export async function POST(request) {
                     Alex AI está comprometida con la implementación de inteligencia artificial para optimizar la toma de decisiones en mercados financieros. Este análisis se realiza para asesorar a traders e inversionistas en la toma de decisiones basadas en datos técnicos y sentimentales de mercado.
 
                     # Ejemplos
+                    - Tendencia: ALCISTA o BAJISTA (de acuerdo al ${analysisImage} corto para analisis diario, mediano/largo plazo para analisis semanal)
+                    - Volúmen: ALTo, BAJO o MEDIO (de acuerdo al ${analysisImage})
+                    - Rango de precios: $15.000 / $ 20.000 (De acuerdo al ${analysisImage})
+                    - Entrada : $ 17.000 (De acuerdo al ${analysisImage})
+                    - Stop Loss: $ 14100 (De acuerdo al ${analysisImage})
 
                     **Conclusión Final:**
-                    El análisis técnico sugiere una configuración alcista con niveles clave bien definidos y confirmación de impulso a través del cruce alcista del MACD y el soporte dinámico de la EMA de 50 días.
+
                     Las noticias refuerzan la perspectiva positiva con un sentimiento alcista predominante, lo que brinda una confluencia favorable para una entrada en $42,000 con un objetivo en $47,000.
+                    El análisis técnico sugiere una configuración alcista con niveles clave bien definidos y confirmación de impulso a través del cruce alcista del MACD y el soporte dinámico de la EMA de 50 días.
                     Recomendación: Se sugiere COMPRA una posición larga con una adecuada gestión del riesgo, alineando el stop-loss en $39,500 para proteger la inversión ante posibles retrocesos.
 
                     # Notas
@@ -57,7 +63,7 @@ export async function POST(request) {
                         },
                         {
                             type: 'text',
-                            text: `¿Cuál es la conclusión final considerando el análisis técnico y las noticias(conclusionNews y sentimentCountNews)? Proporciona una recomendación basada en los niveles clave, indicadores técnicos y el sentimiento del mercado. Incluye una evaluación de riesgos y menciona si la acción de precio técnica se alinea con el sentimiento del mercado.`
+                            text: `¿Cuál es la conclusión final y puntos claves de Volumen, Entrada, Stop Loss, Objetivo del Precio, Rango de Precios y tendencia; considerando el análisis técnico y las noticias(conclusionNews y sentimentCountNews)? Proporciona una recomendación basada en los niveles clave, indicadores técnicos y el sentimiento del mercado. Incluye una evaluación de riesgos y menciona si la acción de precio técnica se alinea con el sentimiento del mercado.`
                         }
                     ],
                 },
@@ -139,7 +145,7 @@ async function analyzeImage(base64Image, interval) {
                 {
                     role: 'system',
                     content: `# Rol  
-                    Eres un especialista en finanzas con una sólida experiencia en análisis técnico de mercados financieros, con un enfoque especializado en criptomonedas. Tienes un profundo conocimiento en el uso de indicadores técnicos, patrones de gráficos y estrategias de trading. Tu objetivo es proporcionar análisis precisos y detallados para ayudar a los traders a tomar decisiones informadas.
+                    Eres un especialista en finanzas con una sólida experiencia en análisis técnico de mercados financieros, con un enfoque especializado en criptomonedas. Tienes un profundo conocimiento en el uso de indicadores técnicos, patrones de gráficos y estrategias de trading, basadas en oferta y demanda y puntos de liquidez. Tu objetivo es proporcionar análisis precisos y detallados para ayudar a los traders a tomar decisiones informadas.
 
                     # Tarea
                     Tu tarea es analizar imágenes de gráficos técnicos de criptomonedas y proporcionar un informe detallado que incluya:
@@ -165,11 +171,14 @@ async function analyzeImage(base64Image, interval) {
                     **Ejemplo de análisis:**
                     **Descripción General:** BTC/USDT muestra una consolidación dentro de un canal alcista en el gráfico diario, con un volumen decreciente que indica indecisión en el mercado.
                     **Marco temporal: Gráfico de 1 dia
+                    **Tendencia: Observando el ultimo movimento de velas, es negativo
                     **Niveles Clave:**
+                    - Rango: $42,000-,47,000
                     - Soporte: $40,000
                     - Resistencia: $45,000
 
                     **Indicadores Técnicos:**
+                    - el VOLUMEN, es bajo, no indica gran consideración de los traders.
                     - RSI en 60, indicando fuerza moderada.
                     - MACD mostrando cruce alcista, señal de posible impulso positivo.
                     - La EMA de 50 días actúa como soporte dinámico.
@@ -193,7 +202,7 @@ async function analyzeImage(base64Image, interval) {
                     content: [
                         {
                             type: 'text',
-                            text: `¿Qué patrones y análisis técnico detectas en esta imágen, con el intervalo de ${interval} ?`,
+                            text: `¿Cual consideras que es la próxima dirección del precio y donde podria ejecutar mi operación buscando como mínimo una relación riesgo beneficio de 1 a 2 y que mi stop loss este protejido siempre debajo de un mínimo o arriba de un máximo, con el intervalo de ${interval} ?`,
                         },
                         {
                             type: 'image_url',

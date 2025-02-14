@@ -29,7 +29,7 @@ export async function POST(request) {
 async function analyzeImage(base64Image, interval) {
     try {
         const analysis = await openai.chat.completions.create({
-            model: "gpt-4o-mini",
+            model: "gpt-4o",
             messages: [
                 {
                     role: 'system',
@@ -60,11 +60,14 @@ async function analyzeImage(base64Image, interval) {
                     **Ejemplo de análisis:**
                     **Descripción General:** BTC/USDT muestra una consolidación dentro de un canal alcista en el gráfico diario, con un volumen decreciente que indica indecisión en el mercado.
                     **Marco temporal: Gráfico de 1 dia
+                    **Tendencia: Observando el ultimo movimento de velas, es negativo
                     **Niveles Clave:**
+                    - Rango: $42,000-,47,000
                     - Soporte: $40,000
                     - Resistencia: $45,000
 
                     **Indicadores Técnicos:**
+                    - el VOLUMEN, es bajo, no indica gran consideración de los traders.
                     - RSI en 60, indicando fuerza moderada.
                     - MACD mostrando cruce alcista, señal de posible impulso positivo.
                     - La EMA de 50 días actúa como soporte dinámico.
