@@ -31,7 +31,7 @@ export const Chat = () => {
         <div id="responseModal" className="relative flex justify-end items-center h-full mr-[-24rem]">
             <div className="bg-white p-3 rounded-lg shadow-lg w-96 h-dvh max-w-full overflow-y-auto ">
             <button id="closeModal" onClick={closeModal} className="text-dark-900 text-xl font-bold relative top-3 left-[93%]">&times;</button>
-                <h2 className="text-xl font-semibold text-center mb-3">Análisis by Alex AI 🤖</h2>
+                <h2 className="text-xl font-semibold text-center mb-3">Análisis by Alios 🤖</h2>
                 <p id="modalMessage">Analizando
                 <Loading/>
                 </p>

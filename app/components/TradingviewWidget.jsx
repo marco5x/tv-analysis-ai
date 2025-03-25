@@ -660,10 +660,10 @@ const TradingviewWidget = () => {
                             return `
                                 <a href="${article.URL}" target="_blank" onmouseover="this.style.backgroundColor = '#DEE2F3'" onmouseout="this.style.backgroundColor = ''" style="display: flex; gap: 1rem; align-items:center; margin-top:0.5rem; margin-bottom: 0.5rem; border-bottom: 1px solid #e5e7eb;">
                                     <img src=${article.IMAGE_URL} alt=${article.TITLE} width="48px" style="height:48px" />
-                                    <div>
+                                    <div style= "width: 100%">
                                         <sup>${timeAgo(article.PUBLISHED_ON)}</sup>
                                         <h2>${article.TITLE}</h2>
-                                        <sub style="position:relative; right:-69%; text-align: end">Sentimiento: ${traduction(article.SENTIMENT)}</sub>
+                                        <sub style="position: relative; right: -75%; text-align: end">Sentimiento: ${traduction(article.SENTIMENT)}</sub>
                                     </div>
                                 </a>
                             `;
